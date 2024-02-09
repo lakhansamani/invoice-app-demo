@@ -34,7 +34,9 @@ export const Home: FC<StackScreenProps<Routes, 'HomeScreen'>> = ({
         body: JSON.stringify({
           query: `
             query {
-              invoices {
+              invoices(order_by: {
+                created_at: desc
+              }) {
                 id
                 number
                 date
@@ -46,24 +48,26 @@ export const Home: FC<StackScreenProps<Routes, 'HomeScreen'>> = ({
         }),
       });
       const data = await response.json();
-      if (isComponentMounted) {
+      if (isComponentMounted && data.data) {
         setInvoices(data.data.invoices);
-        setLoading(false);
       }
+      setLoading(false);
     }
     getInvoices();
     return () => {
       isComponentMounted = false;
     };
   }, []);
-
+  console.log(invoices);
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       {loading ? (
-        <Spinner />
+        <Spinner data-testid="spinner" testID="HomeScreenLoading" />
       ) : (
         <>
-          <Heading my="$5">Your Invoices</Heading>
+          <Heading my="$5" testID="HomeScreenTitle">
+            Your Invoices
+          </Heading>
           {invoices.length ? (
             <FlatList
               data={invoices}

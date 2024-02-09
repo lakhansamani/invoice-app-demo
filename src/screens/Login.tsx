@@ -11,6 +11,7 @@ import {
   FormControlErrorText,
   Input,
   InputField,
+  Divider,
 } from '@gluestack-ui/themed';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useContext, useState } from 'react';
@@ -95,6 +96,9 @@ export const Login = () => {
       alignItems="center"
       height="100%"
       bg="$coolGray200"
+      style={{
+        marginTop: -50,
+      }}
     >
       <Heading>Welcome,</Heading>
       <Heading>Invoicing on your tips!</Heading>
@@ -110,6 +114,7 @@ export const Login = () => {
             </FormControlLabel>
             <Input>
               <InputField
+                testID="EmailInput"
                 type="text"
                 keyboardType="email-address"
                 value={values.email}
@@ -134,6 +139,7 @@ export const Login = () => {
             </FormControlLabel>
             <Input>
               <InputField
+                testID="PasswordInput"
                 type="password"
                 value={values.password}
                 onChangeText={(text) =>
@@ -150,9 +156,15 @@ export const Login = () => {
               </FormControlErrorText>
             </FormControlError>
           </FormControl>
-          <Button size="lg" mt="$3" onPress={handleSubmit} disabled={loading}>
+          <Button
+            size="lg"
+            mt="$3"
+            onPress={handleSubmit}
+            disabled={loading}
+            testID="LoginButton"
+          >
             {loading && <ButtonSpinner mr="$1" />}
-            <ButtonText>Login</ButtonText>
+            <ButtonText>{loading ? 'Signing in...' : 'Sign In'}</ButtonText>
           </Button>
         </SafeAreaView>
       </Box>

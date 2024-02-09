@@ -11,14 +11,9 @@ import {
   FormControlErrorText,
   Input,
   InputField,
-  set,
   Textarea,
   TextareaInput,
-  ScrollView,
 } from '@gluestack-ui/themed';
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from '@react-native-community/datetimepicker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FC, useContext, useState } from 'react';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -134,6 +129,7 @@ export const AddInvoice: FC<BottomTabScreenProps<Routes, 'AddInvoice'>> = ({
             </FormControlLabel>
             <Input>
               <InputField
+                testID="InvoiceNumberInput"
                 type="text"
                 value={values.number}
                 onChangeText={(text) => setValues({ ...values, number: text })}
@@ -150,29 +146,18 @@ export const AddInvoice: FC<BottomTabScreenProps<Routes, 'AddInvoice'>> = ({
             size="lg"
             isRequired
             isInvalid={Boolean(values.dateError)}
-            isReadOnly
           >
             <FormControlLabel mb="$1" mt="$3">
               <FormControlLabelText>Date</FormControlLabelText>
             </FormControlLabel>
             <Input>
               <InputField
+                testID="InvoiceDateInput"
                 type="text"
                 value={values.date}
+                onChangeText={(text) => setValues({ ...values, date: text })}
                 placeholder="Pick Date ->"
                 placeholderTextColor="#dfdfdf"
-              />
-              <DateTimePicker
-                value={values.date ? new Date(values.date) : new Date()}
-                mode={'date'}
-                onChange={(event: DateTimePickerEvent, selectedDate?: Date) => {
-                  setValues({
-                    ...values,
-                    date: selectedDate
-                      ? selectedDate.toISOString().split('T')[0]
-                      : '',
-                  });
-                }}
               />
             </Input>
             <FormControlError>
@@ -191,6 +176,7 @@ export const AddInvoice: FC<BottomTabScreenProps<Routes, 'AddInvoice'>> = ({
             <Input>
               <InputField
                 type="text"
+                testID="InvoiceAmountInput"
                 keyboardType="number-pad"
                 value={values.amount}
                 onChangeText={(text) => setValues({ ...values, amount: text })}
@@ -210,6 +196,7 @@ export const AddInvoice: FC<BottomTabScreenProps<Routes, 'AddInvoice'>> = ({
 
             <Textarea size="md">
               <TextareaInput
+                testID="InvoiceNoteInput"
                 value={values.note}
                 onChangeText={(text) => setValues({ ...values, note: text })}
                 placeholder="Small Description"
@@ -218,7 +205,13 @@ export const AddInvoice: FC<BottomTabScreenProps<Routes, 'AddInvoice'>> = ({
             </Textarea>
           </FormControl>
 
-          <Button size="lg" mt="$3" onPress={handleSubmit} disabled={loading}>
+          <Button
+            size="lg"
+            mt="$3"
+            onPress={handleSubmit}
+            disabled={loading}
+            testID="AddInvoiceButton"
+          >
             {loading && <ButtonSpinner mr="$1" />}
             <ButtonText>Save</ButtonText>
           </Button>

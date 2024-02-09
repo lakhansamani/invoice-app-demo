@@ -9,6 +9,7 @@ export const Profile = () => {
       <Heading>Welcome</Heading>
       <Text>{authData.email}</Text>
       <Button
+        testID="LogoutButton"
         mt="$10"
         size="sm"
         onPress={() => {
